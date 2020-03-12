@@ -1,0 +1,262 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include <windows.h>
+#include <dos.h>
+#include <dir.h>
+
+void player1();
+void player2();
+int printing();
+void checkwinner();
+void actual();
+void checkdraw();
+  void setcolor(int ForgC);
+char mat[3][3];
+int num[3][3];
+char play1[80];
+char play2[80];
+int c=0,e,f=0;
+
+int main()
+{
+ printf("\n\n\t\t\tPlayer 1 Enter Your Name : \t");gets(play1);
+   printf("\t\t\tPlayer 2 Enter Your Name : \t");gets(play2);
+
+  for(int i=0;i<3;i++)
+  for(int t=0;t<3;t++)
+  mat[i][t]='_';
+
+
+  int p=1;
+
+    for(int i=0;i<3;i++)
+  {for(int t=0;t<3;t++)
+        {num[i][t]= p;
+          p++;}}
+  printing();
+
+actual();
+
+
+
+return 0;
+
+
+
+
+
+
+}
+void player2(){
+  printf("\n\n\t%s Your Move  ( 0 ): ",play2 );scanf("%d",&e );
+ switch(e)
+ {
+ case 1:
+     if(mat[0][0]=='X'|| mat[0][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[0][0]='0';}
+     break;
+     case 2:
+         if(mat[0][1]=='X'|| mat[0][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[0][1]='0';}
+     break;
+     case 3:
+         if(mat[0][2]=='X'|| mat[0][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[0][2]='0';}
+     break;
+     case 4:
+         if(mat[1][0]=='X'|| mat[1][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[1][0]='0';}
+     break;
+     case 5:
+         if(mat[1][1]=='X'|| mat[1][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[1][1]='0';}
+     break;
+     case 6:
+         if(mat[1][2]=='X'|| mat[1][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[1][2]='0';}
+     break;
+     case 7:
+         if(mat[2][0]=='X'|| mat[2][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[2][0]='0';}
+     break;
+     case 8:
+         if(mat[2][1]=='X'|| mat[2][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[2][1]='0';}
+     break;
+     case 9:
+         if(mat[2][2]=='X'|| mat[2][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player2();}
+     else{
+     mat[2][2]='0';}
+     break;
+     default :
+         system("cls");
+
+    printing();
+        printf("\n\n\tInvalid coordinates\n\n");
+    player2();
+    break;
+ }
+}
+
+void checkwinner(){
+  if(  (mat[0][0]=='X' && mat[1][1]=='X' && mat[2][2]=='X' ) || (mat[0][0]=='X' && mat[1][0]=='X' && mat[2][0]=='X' ) || (mat[0][0]=='X' && mat[0][1]=='X' && mat[0][2]=='X' )|| (mat[0][1]=='X' && mat[1][1]=='X' && mat[2][1]=='X' )||(mat[0][2]=='X' && mat[1][2]=='X' && mat[2][2]=='X' )  || (mat[1][0]=='X' && mat[1][1]=='X' && mat[1][2]=='X' ) || (mat[2][0]=='X' && mat[2][1]=='X' && mat[2][2]=='X' ) || (mat[2][0]=='X' && mat[1][1]=='X' && mat[0][2]=='X' ))
+{
+printf("\n\n\t\t\t%s WIN!!!!!!\n\n\n\n",play1 );c++;
+}
+if(  (mat[0][0]=='0' && mat[1][1]=='0' && mat[2][2]=='0' ) || (mat[0][0]=='0' && mat[1][0]=='0' && mat[2][0]=='0' ) || (mat[0][0]=='0' && mat[0][1]=='0' && mat[0][2]=='0' )|| (mat[0][1]=='0' && mat[1][1]=='0' && mat[2][1]=='0' )||(mat[0][2]=='0' && mat[1][2]=='0' && mat[2][2]=='0' )|| (mat[1][0]=='0' && mat[1][1]=='0' && mat[1][2]=='0' ) || (mat[2][0]=='0' && mat[2][1]=='0' && mat[2][2]=='0' ) || (mat[2][0]=='0' && mat[1][1]=='0' && mat[0][2]=='0' )    )
+{
+printf("\n\n\t\t\t%s WIN!!!!!!\n\n\n\n",play2);c++;
+}
+}
+int printing(){
+    system("cls");
+
+     for(int i=0;i<3;i++)
+                          {
+                              printf("\t\t");
+                            for(int t=0;t<3;t++)
+                                                  {  if(mat[i][t]=='X'){setcolor(12);}
+                                                      else if (mat[i][t]=='0'){setcolor(11);}
+                                                      printf("%3c",mat[i][t]);
+                                                      setcolor(15);
+                                                      if(t==2){
+                                                                printf("\t\t");
+                                                                         for( int q=0;q<3;q++)
+                                                                         {setcolor(14);
+                                                                             printf("%3d",num[i][q]);setcolor(15);
+                                                                         }
+                                                             printf("\n"); }
+
+                                                 }
+                        }
+
+setcolor(15);
+
+return 0;}
+
+
+void player1(){
+  printf("\n\n\t%s Your Move  ( X ) : ",play1 );scanf("%d",&e );
+ switch(e)
+ {
+ case 1:
+     if(mat[0][0]=='X'|| mat[0][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[0][0]='X';}
+     break;
+     case 2:
+         if(mat[0][1]=='X'|| mat[0][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[0][1]='X';}
+     break;
+     case 3:
+         if(mat[0][2]=='X'|| mat[0][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[0][2]='X';}
+     break;
+     case 4:
+         if(mat[1][0]=='X'|| mat[1][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[1][0]='X';}
+     break;
+     case 5:
+         if(mat[1][1]=='X'|| mat[1][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[1][1]='X';}
+     break;
+     case 6:
+         if(mat[1][2]=='X'|| mat[1][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[1][2]='X';}
+     break;
+     case 7:
+         if(mat[2][0]=='X'|| mat[2][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[2][0]='X';}
+     break;
+     case 8:
+         if(mat[2][1]=='X'|| mat[2][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[2][1]='X';}
+     break;
+     case 9:
+         if(mat[2][2]=='X'|| mat[2][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");player1();}
+     else{
+     mat[2][2]='X';}
+     break;
+     default :
+         system("cls");
+
+    printing();
+        printf("\n\n\tInvalid coordinates\n\n");
+    player1();
+    break;
+ }
+}
+
+
+
+
+void actual()
+{
+player1();
+printing();
+checkwinner();
+if (c==1)
+        {
+         return 0;
+         }
+checkdraw();
+if (f==1)
+        {
+         return 0;
+         }
+player2();
+          printing();
+          checkwinner();
+           if (c==1) {
+                                         return 0;
+                                    }
+          checkdraw();
+
+        if (f==1)
+        {
+         return 0;
+         }
+              actual();
+    }
+
+
+
+void checkdraw()
+{
+    if(   (mat[0][0]=='0'|| mat[0][0]=='X')&&(mat[0][1]=='0'|| mat[0][1]=='X')&&(mat[0][2]=='0'|| mat[0][2]=='X')&&(mat[1][0]=='0'|| mat[1][0]=='X')&&(mat[1][1]=='0'|| mat[1][1]=='X')&&(mat[1][2]=='0'|| mat[1][2]=='X')&&(mat[2][0]=='0'|| mat[2][0]=='X')&&(mat[2][1]=='0'|| mat[2][1]=='X')&&(mat[2][2]=='0'|| mat[2][2]=='X')   )
+       {
+
+        f++;
+        printf("\n\n\t\t\tDRAW!!!!!!\n\n\n\n");
+    }}
+    void setcolor(int ForgC)
+    {
+    WORD wColor;
+
+     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+     CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+                          //We use csbi for the wAttributes word.
+    if(GetConsoleScreenBufferInfo(hStdOut, &csbi))
+    {
+                    //Mask out all but the background attribute, and add in the forgournd color
+         wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+         SetConsoleTextAttribute(hStdOut, wColor);
+    }
+    return;
+   }
