@@ -1,0 +1,440 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<windows.h>
+#include<dos.h>
+#include<dir.h>
+#include<string.h>
+#define MAXLEVEL 54   // 6 corresponds to 54
+void setcolor(int ForgC);
+void printing();
+void checking();
+void actual();
+void game();
+void saveprogress();
+void readingQuestion(char *qfile);
+char A[9][9][3];
+char lvl;
+char ques[12]="level0.txt";
+char currentPlayer[20];
+char currentPlayername[20];
+char currentPlayern[20];
+char namecurrentPlayer[20];
+int flag=0;
+void getmove();
+void empty();
+char showPlayers();
+char readingPlayerStat(char *qfile);
+void loadprogress(char c);
+
+
+int main(){
+    game();
+
+
+}
+void game(){
+   char level= showPlayers();
+   system("cls");
+   printf("\n\n");
+   printf("       %s  \n\n",currentPlayern);
+   int flag=1;
+   for(int i=49;i<=level;i++){
+        printf("%d) LEVEL %d\n",flag,flag);
+        flag++;
+   }
+   b:
+printf("\n\n");
+printf("        LEVEL U WANT TO PLAY    ");
+scanf(" %c",&lvl);
+
+if(lvl<49 || level<lvl){printf("\n       NOT VALID MOVE ");goto b;}
+
+ques[5]=lvl;
+
+system("cls");
+printf("         %c) LEVEL %c\n\n",lvl,lvl);
+printf("\t\t1)NEW GAME\n\t\t2)Load Previously Saved Game\n\n\t\tEnter Your Choice Number   :");
+scanf("%d",&flag);
+e:
+ readingQuestion(ques);
+
+if(flag==2)
+     {
+
+       loadprogress(lvl);
+if(flag==1){goto e;}
+     }
+
+
+actual();
+return ;
+
+}
+void actual(){
+    checking();
+   do{
+
+    printing();
+    getmove();
+    empty();
+    checking();
+    printing();
+
+}while(flag!=0);
+    printing();
+    printf("/n/n                     YOU  WON >>>>>> THANK YOU FOR PLAYING\n\n");
+    FILE *fp;
+    fp=fopen(currentPlayer,"r+");
+    char lvlcomp=getc(fp);
+    if(lvlcomp==ques[5]){
+        rewind(fp);
+        if(lvlcomp+1<=MAXLEVEL){lvlcomp++;putc(lvlcomp,fp);}
+    }
+    fclose(fp);
+    printf("press Enter to Continue   ");getchar();
+
+}
+void readingQuestion(char *qfile){
+    FILE *fp;
+    fp=fopen(qfile,"r");
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            A[i][j][0]=getc(fp);
+            A[i][j][1]=A[i][j][0]=='_'?'0': '1' ;
+            A[i][j][2]=0;
+        }
+        getc(fp);
+    }
+}
+void setcolor(int ForgC){
+    WORD wColor;
+  HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+                       //We use csbi for the wAttributes word.
+    if(GetConsoleScreenBufferInfo(hStdOut, &csbi))
+    {
+                 //Mask out all but the background attribute, and add in the forgournd color
+      wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+      SetConsoleTextAttribute(hStdOut, wColor);
+    }
+    return;
+}
+void printing(){
+    system("cls");
+        printf("%s LEVEL %c",currentPlayern,lvl);
+    printf("\n\n");
+    setcolor(15);
+    printf("                 \263               \263           \n");
+    for(int i=0;i<9;i++){
+        if(i%3==0 && i!=0){
+                printf("  _______________\263_______________\263_______________\n");
+                printf("                 \263               \263           \n");
+        }
+        for(int j=0;j<9;j++)
+            {
+                if(j%3==0 && j!=0)      printf("  \263");
+                    else   printf("  ");
+                if(A[i][j][2]=='1' && A[i][j][1]=='0')      setcolor(4);
+                    else if (A[i][j][0]!='_' && A[i][j][1]=='0') setcolor(3);
+                    else  A[i][j][1]=='1'?setcolor(2):setcolor(15);
+
+               printf("  %c",A[i][j][0]);
+                setcolor(15);
+        }
+         printf("\n                 \263               \263           \n");
+    }
+}
+void checking(){
+    flag=0;
+    // for row
+    for(int i=0;i<9;i++){
+    for(int j=0;j<8;j++)
+        {
+        for(int m=j+1;m<9;m++){
+                if(A[i][j][0]==A[i][m][0]){
+                    flag=1;
+                }
+                if(A[i][j][0]==A[i][m][0]&&A[i][j][0]!='_')
+                    {
+                       A[i][j][2]='1';
+                       A[i][m][2]='1';
+
+                    }
+                }
+        }
+    }
+    //for column
+    for(int i=0;i<9;i++){
+    for(int j=0;j<8;j++)
+        {
+        for(int m=j+1;m<9;m++){
+                if(A[j][i][0]==A[m][i][0]){
+                    flag=1;
+                }
+                if(A[j][i][0]==A[m][i][0]&&A[j][i][0]!='_')
+                    {
+                       A[j][i][2]='1';
+                       A[m][i][2]='1';
+
+                    }
+                }
+        }
+    }
+        // FOR DIAGONALS
+for( int m=0;m<9;m++){
+        for(int n=0;n<9;n++)
+        {
+                        if(m%3==0&&n%3==0)
+                        {
+                            int x,y;
+                            for(int i=m;i<(m+3);i++)
+                            {
+                                for(int j=n;j<(n+3);j++)
+                                {
+                                x=i;y=j+1;
+                                label2:
+                                    if(A[i][j][0]==A[x][y][0])
+                                    {
+                                       flag=1;
+                                    }
+                                if(A[i][j][0]==A[x][y][0]&&A[i][j][0]!='_')
+                                    { A[i][j][2]='1';
+                                    A[x][y][2]='1';
+
+                                }
+
+                                else if(y<(n+2))
+                                     {
+                                         y++;goto label2;
+                                     }
+                                else if(x<(m+2))
+                                    {
+                                        x++;y=n;
+                                        goto label2;
+                                }
+                            }
+                        }
+                    }
+                }
+}
+}
+void empty(){
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            A[i][j][2]='0';
+        }
+    }
+}
+void getmove(){
+    int move[2];
+    char c;
+    printf(" ENTER 100 to save progress and 200 to return to main menu \nENTER CO-ORDINATES   : ");
+    scanf("%d %d",&move[0],&move[1]);
+    if((move[0]<1 || move[0]>9) || ( move[1]<1 || move[1]>9))
+        {
+            if(move[0]==100){saveprogress();printing();printf("\n         __________DONE SAVING______\n");getmove();return;}
+           else if(move[0]==200)main();
+             else{  printing();printf("\n         __________INVALID MOVE______\n");getmove();return ;}}
+int k,l;
+switch(move[0]){
+case 1:
+    switch(move[1]){
+    case 1:k=0;l=0;break;
+    case 2:k=0;l=1;break;
+    case 3:k=0;l=2;break;
+    case 4:k=1;l=0;break;
+    case 5:k=1;l=1;break;
+    case 6:k=1;l=2;break;
+    case 7:k=2;l=0;break;
+    case 8:k=2;l=1;break;
+    case 9:k=2;l=2;break;
+    }
+    break;
+case 2:
+    switch(move[1]){
+    case 1:k=0;l=3;break;
+    case 2:k=0;l=4;break;
+    case 3:k=0;l=5;break;
+    case 4:k=1;l=3;break;
+    case 5:k=1;l=4;break;
+    case 6:k=1;l=5;break;
+    case 7:k=2;l=3;break;
+    case 8:k=2;l=4;break;
+    case 9:k=2;l=5;break;
+    }break;
+case 3:
+    switch(move[1]){
+    case 1:k=0;l=6;break;
+    case 2:k=0;l=7;break;
+    case 3:k=0;l=8;break;
+    case 4:k=1;l=6;break;
+    case 5:k=1;l=7;break;
+    case 6:k=1;l=8;break;
+    case 7:k=2;l=6;break;
+    case 8:k=2;l=7;break;
+    case 9:k=2;l=8;break;
+    }break;
+case 4:
+    switch(move[1]){
+    case 1:k=3;l=0;break;
+    case 2:k=3;l=1;break;
+    case 3:k=3;l=2;break;
+    case 4:k=4;l=0;break;
+    case 5:k=4;l=1;break;
+    case 6:k=4;l=2;break;
+    case 7:k=5;l=0;break;
+    case 8:k=5;l=1;break;
+    case 9:k=5;l=2;break;
+    }break;
+case 5:
+    switch(move[1]){
+    case 1:k=3;l=3;break;
+    case 2:k=3;l=4;break;
+    case 3:k=3;l=5;break;
+    case 4:k=4;l=3;break;
+    case 5:k=4;l=4;break;
+    case 6:k=4;l=5;break;
+    case 7:k=5;l=3;break;
+    case 8:k=5;l=4;break;
+    case 9:k=5;l=5;break;
+}break;
+case 6:
+    switch(move[1]){
+    case 1:k=3;l=6;break;
+    case 2:k=3;l=7;break;
+    case 3:k=3;l=8;break;
+    case 4:k=4;l=6;break;
+    case 5:k=4;l=7;break;
+    case 6:k=4;l=8;break;
+    case 7:k=5;l=6;break;
+    case 8:k=5;l=7;break;
+    case 9:k=5;l=8;break;
+    }break;
+case 7:
+    switch(move[1]){
+    case 1:k=6;l=0;break;
+    case 2:k=6;l=1;break;
+    case 3:k=6;l=2;break;
+    case 4:k=7;l=0;break;
+    case 5:k=7;l=1;break;
+    case 6:k=7;l=2;break;
+    case 7:k=8;l=0;break;
+    case 8:k=8;l=1;break;
+    case 9:k=8;l=2;break;
+    }break;
+case 8:
+    switch(move[1]){
+    case 1:k=6;l=3;break;
+    case 2:k=6;l=4;break;
+    case 3:k=6;l=5;break;
+    case 4:k=7;l=3;break;
+    case 5:k=7;l=4;break;
+    case 6:k=7;l=5;break;
+    case 7:k=8;l=3;break;
+    case 8:k=8;l=4;break;
+    case 9:k=8;l=5;break;
+    }break;
+case 9:
+ switch(move[1]){
+    case 1:k=6;l=6;break;
+    case 2:k=6;l=7;break;
+    case 3:k=6;l=8;break;
+    case 4:k=7;l=6;break;
+    case 5:k=7;l=7;break;
+    case 6:k=7;l=8;break;
+    case 7:k=8;l=6;break;
+    case 8:k=8;l=7;break;
+    case 9:k=8;l=8;break;
+    }break;
+}
+if(A[k][l][1]=='1'){printing();printf("\n         ________INVALID MOVE______\n");getmove();return ;}
+ printf("\nENTER NUMBER U WANT TO INSERT   : ");
+ scanf(" %c",&c);
+ if( c>57 || c<47 ){printing();printf("\n         ___________INVALID MOVE_________\n");getmove();return ;}
+ else A[k][l][0]=c;
+}
+void loadprogress(char c){
+        strcpy(namecurrentPlayer,currentPlayern);
+        FILE *fp;
+        namecurrentPlayer[strlen(currentPlayern)]=c;
+    namecurrentPlayer[strlen(currentPlayern)+1]='\0';
+    strcat(namecurrentPlayer,".txt");
+
+if((fp=fopen(namecurrentPlayer,"r"))!=NULL){
+for(int i=0;i<9;i++){
+    for(int j=0;j<9;j++){
+       A[i][j][0]=fgetc(fp);
+
+    }
+}
+fclose(fp);
+}
+else flag =1;
+
+}
+
+char showPlayers(){
+    a:
+    system("cls");
+    FILE *fp;
+    int move;
+    char S[10][20];
+
+    fp=fopen("profiles.txt","r+");
+    int temp=1;
+    while(!feof(fp)){
+        fgets(S[temp],11,fp);
+        if(S[temp][strlen(S[temp])-1]=='\n')
+            S[temp][strlen(S[temp])-1]='\0';
+        printf("%d) %s\n",temp,S[temp]);
+        temp++;
+    }
+    printf("\n\n  FOR LOADING PROFILE ENTER RESPECTIVE NUMBER______ PRESS 10 FOR CREATING NEW  ");
+    scanf("%d",&move);
+    if(move==10){
+            fputc('\n',fp);
+            printf("\n   Enter your name ");
+            scanf("%s",S[temp]);
+            fputs(S[temp],fp);
+            fclose(fp);
+            goto a;
+            }
+            strcpy(namecurrentPlayer,S[move]);
+            strcpy(currentPlayern,S[move]);
+        strcpy(currentPlayer,S[move]);
+        strcpy(currentPlayername,S[move]);
+        strcat(currentPlayer,".txt");
+        return readingPlayerStat(currentPlayer);
+}
+void saveprogress(){
+    strcpy(currentPlayername,currentPlayern);
+    FILE *fp;
+    currentPlayername[strlen(currentPlayern)]=ques[5];
+    currentPlayername[strlen(currentPlayern)+1]='\0';
+    strcat(currentPlayername,".txt");
+
+fp=fopen(currentPlayername,"w");
+for(int i=0;i<9;i++){
+    for(int j=0;j<9;j++){
+        putc(A[i][j][0],fp);
+
+    }
+}
+fclose(fp);
+}
+char readingPlayerStat(char *qfile){
+    char level;
+FILE *fp;
+    if((fp=fopen(qfile,"r"))==NULL)
+    {
+            level = '1';
+            fp=fopen(qfile,"w");
+            putc('1',fp);
+            fclose(fp);
+        }
+    else {level=getc(fp);
+    fclose(fp);
+    }
+    return level;
+ }
