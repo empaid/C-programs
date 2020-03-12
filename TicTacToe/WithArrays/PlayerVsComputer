@@ -1,0 +1,153 @@
+#include<stdio.h>
+#include<stdlib.h>
+int compmove();
+int printing();
+void getmove();
+void checkwinner();
+void actual();
+char mat[3][3];
+int num[3][3];
+int k=0,l;
+
+int main()
+{
+
+for(int i=0;i<3;i++)
+for(int t=0;t<3;t++)
+mat[i][t]='_';
+int p=1;
+for(int i=0;i<3;i++)
+{for(int t=0;t<3;t++)
+{num[i][t]= p;
+p++;}}
+
+  printing();
+  actual();
+
+
+
+return 0;}
+
+
+
+
+int compmove(){
+  for(int i=0;i<3;i++)
+    for(int t=0;t<3;t++)
+    {
+      if(mat[i][t]=='_')
+      {mat[i][t]='0';return 0;}
+    }
+    return 0;
+}
+void checkwinner(){
+  if(  (mat[0][0]=='X' && mat[1][1]=='X' && mat[2][2]=='X' ) || (mat[0][0]=='X' && mat[1][0]=='X' && mat[2][0]=='X' ) || (mat[0][0]=='X' && mat[0][1]=='X' && mat[0][2]=='X' )|| (mat[0][1]=='X' && mat[1][1]=='X' && mat[2][1]=='X' )||(mat[0][2]=='X' && mat[1][2]=='X' && mat[2][2]=='X' )  || (mat[1][0]=='X' && mat[1][1]=='X' && mat[1][2]=='X' ) || (mat[2][0]=='X' && mat[2][1]=='X' && mat[2][2]=='X' ) || (mat[2][0]=='X' && mat[1][1]=='X' && mat[0][2]=='X' ))
+{
+printf("\n\n\t\t\tYOU WIN!!!!!!\n\n\n\n" );k++;
+}
+if(  (mat[0][0]=='0' && mat[1][1]=='0' && mat[2][2]=='0' ) || (mat[0][0]=='0' && mat[1][0]=='0' && mat[2][0]=='0' ) || (mat[0][0]=='0' && mat[0][1]=='0' && mat[0][2]=='0' )|| (mat[0][1]=='0' && mat[1][1]=='0' && mat[2][1]=='0' )||(mat[0][2]=='0' && mat[1][2]=='0' && mat[2][2]=='0' )|| (mat[1][0]=='0' && mat[1][1]=='0' && mat[1][2]=='0' ) || (mat[2][0]=='0' && mat[2][1]=='0' && mat[2][2]=='0' ) || (mat[2][0]=='0' && mat[1][1]=='0' && mat[0][2]=='0' )    )
+{
+printf("\n\n\t\t\tYOU LOSE\n\n\n\n");k++;
+}
+}
+int printing(){
+    system("cls");
+
+     for(int i=0;i<3;i++)
+                          {
+                              printf("\t\t");
+                            for(int t=0;t<3;t++)
+                                                  {
+                                                      printf("%3c",mat[i][t]);
+                                                      if(t==2){
+                                                                printf("\t\t");
+                                                                         for( int q=0;q<3;q++)
+                                                                         {
+                                                                             printf("%3d",num[i][q]);
+                                                                         }
+                                                             printf("\n"); }
+
+                                                 }
+                        }
+
+
+
+return 0;}
+void getmove(){
+  printf("\n\n\tEnter the corresp. number for YOUR MOVE : " );scanf("%d",&l );
+ switch(l)
+ {
+ case 1:
+     if(mat[0][0]=='X'|| mat[0][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[0][0]='X';}
+     break;
+     case 2:
+         if(mat[0][1]=='X'|| mat[0][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[0][1]='X';}
+     break;
+     case 3:
+         if(mat[0][2]=='X'|| mat[0][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[0][2]='X';}
+     break;
+     case 4:
+         if(mat[1][0]=='X'|| mat[1][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[1][0]='X';}
+     break;
+     case 5:
+         if(mat[1][1]=='X'|| mat[1][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[1][1]='X';}
+     break;
+     case 6:
+         if(mat[1][2]=='X'|| mat[1][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[1][2]='X';}
+     break;
+     case 7:
+         if(mat[2][0]=='X'|| mat[2][0]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[2][0]='X';}
+     break;
+     case 8:
+         if(mat[2][1]=='X'|| mat[2][1]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[2][1]='X';}
+     break;
+     case 9:
+         if(mat[2][2]=='X'|| mat[2][2]=='0'){system("cls");printing();printf("\n\n\tInvalid coordinates\n\n");getmove();}
+     else{
+     mat[2][2]='X';}
+     break;
+     default :
+         system("cls");
+
+    printing();
+        printf("\n\n\tInvalid coordinates\n\n");
+    getmove();
+    break;
+ }
+}
+void actual(){
+getmove();
+printing();
+checkwinner();
+if (k==1)
+        {
+         return 0;
+         }
+else{
+          compmove();
+          printing();
+          checkwinner();
+                           if (k==1) {
+                                         return 0;
+                                    }
+                          else{actual();}
+    }
+}
+
+
